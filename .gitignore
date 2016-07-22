@@ -5,15 +5,15 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+pipes-rb/.bundle
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+pipes-rb/db/*.sqlite3
+pipes-rb/db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
+pipes-rb/log/*
+pipes-rb/tmp/*
 !/log/.keep
 !/tmp/.keep
 
