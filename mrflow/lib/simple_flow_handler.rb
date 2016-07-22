@@ -21,18 +21,20 @@ module MrFlow
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
-          }
+        }
       }
     end
 
     def send_json(tag, data)
-      { body: { 
-        flow: { 
-          flow_tag: tag,
-          payload: data,
-          flow_type: :simple
-        }
-      }.to_json}.merge(json_headers)
+      { 
+        body: { 
+          flow: { 
+            flow_tag: tag,
+            payload: data,
+            flow_type: :simple
+          }
+        }.to_json
+      }.merge(json_headers)
     end
   end
 end
