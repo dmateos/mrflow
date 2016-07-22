@@ -1,6 +1,5 @@
 class FlowsController < ApplicationController
   def show
-    puts params[:flow_tag]
     @flow = Flow.find_by(flow_tag: params[:flow_tag])
 
     respond_to do |format|

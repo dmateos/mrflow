@@ -1,12 +1,13 @@
 require "rails_helper"
 
 RSpec.describe "Create flow with JSON" do
+  let(:header) { { "CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json" } }
+  let(:param) { { payload: "test", flow_tag: "test", flow_type: :simple } }
+
   describe "valid" do
     describe "simple" do
       before :each do
-        param = { payload: "test", flow_tag: "test", flow_type: :simple }
-        post flows_path, params: param.to_json, headers: { "CONTENT_TYPE" => "application/json", 
-                                                                "ACCEPT" => "application/json" } 
+        post flows_path, params: param.to_json, headers: header 
       end
 
       it "returns OK" do
@@ -16,17 +17,14 @@ RSpec.describe "Create flow with JSON" do
       it "returns the id and tag" do
         json = JSON.parse(response.body)
         expect(json["id"]).to be_a(Integer)
-        expect(json["flow_tag"]).to eq("test")
+        expect(json["flow_tag"]).to eq(param[:payload])
       end
     end
   end
 
   describe "invalid" do
     it "returns an error" do
-        param = { payload: "test", flow_tag: "test", flow_type: :simple }
-        post flows_path, params: param.to_json, headers: { "CONTENT_TYPE" => "application/json", 
-                                                                "ACCEPT" => "application/json" } 
-
+        post flows_path, params: param.to_json, headers: header
     end
   end
 end
