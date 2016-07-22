@@ -2,17 +2,17 @@ require "httparty"
 
 module MrFlow
   class SimpleFlowHandler
-    def initialize(server = "http://localhost", transport = HTTParty)
+    def initialize(server = "http://localhost/flows", transport = HTTParty)
       @server = server
       @transport = transport
     end
 
     def send(tag, data)
-      @transport.post("#{@server}/flows", send_json(tag, data))
+      @transport.post("#{@server}", send_json(tag, data))
     end
 
     def receive(tag)
-      @transport.get("#{@server}/flows/#{tag}", json_headers)
+      @transport.get("#{@server}/#{tag}", json_headers)["payload"]
     end
 
     private

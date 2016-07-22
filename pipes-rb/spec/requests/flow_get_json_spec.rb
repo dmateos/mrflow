@@ -1,5 +1,5 @@
 require "rails_helper"
-RSpec.describe "Grab a flow with JSON" do
+RSpec.describe "Grab a flow" do
   describe "valid" do
     describe "simple" do
       let(:existing_flow) { FactoryGirl.create(:flow, id: "test_tag", payload: "test_payload") }

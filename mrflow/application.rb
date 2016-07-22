@@ -2,11 +2,11 @@
 require "optparse"
 require_relative "lib/simple_flow_handler.rb"
 
-URL = "http://localhost:3000"
+URL = "http://localhost:3000/flows"
 
 module MrFlow
   class Application
-    attr_reader :tag, :input, :output, :data, :stdin
+    attr_reader :tag, :input, :output, :data, :stdin, :fake
 
     def initialize(argv)
       @args = argv
@@ -21,7 +21,7 @@ module MrFlow
       if @input and @data
         flow_handler.send(@tag, @data)
       elsif @output
-        puts flow_handler.receive(@tag)["payload"]
+        puts flow_handler.receive(@tag)
       end 
     end
 
@@ -32,6 +32,7 @@ module MrFlow
         opt.on("-s", "--stdin") { @stdin = true }
         opt.on("-t", "--tag TAG") { |tag| @tag = tag }
         opt.on("-d", "--data DATA") { |data| @data = data }
+        opt.on("-f", "--fake") { |fake| @fake = fake }
       end
       parser.parse(argv)
     end
