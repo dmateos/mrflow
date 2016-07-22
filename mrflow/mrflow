@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
 
-require "./application.rb"
+require "./lib/application.rb"
 
 MrFlow::Application.new(ARGV).run

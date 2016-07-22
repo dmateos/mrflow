@@ -1,6 +1,6 @@
 
 require "optparse"
-require_relative "lib/simple_flow_handler.rb"
+require_relative "simple_flow_handler.rb"
 
 URL = "http://localhost:3000/flows"
 

@@ -1,4 +1,4 @@
-require_relative "../application.rb"
+require_relative "../../lib/application.rb"
 
 describe MrFlow::Application do
   describe "argument parsing" do
