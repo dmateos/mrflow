@@ -6,33 +6,32 @@ URL = "http://localhost:3000/flows"
 
 module MrFlow
   class Application
-    attr_reader :tag, :input, :output, :data, :stdin, :fake
+    attr_reader :tag, :input, :state
 
     def initialize(argv)
       @args = argv
+      @state = :none
       parse_options(@args)
-      handle_options
     end
 
-    private
-    def handle_options
+    def run
       flow_handler = MrFlow::SimpleFlowHandler.new(URL)
 
-      if @input and @data
-        flow_handler.send(@tag, @data)
-      elsif @output
+      if @tag and not @input
+        @state = :output
         puts flow_handler.receive(@tag)
+      elsif @tag and @input
+        @state = :input
+        flow_handler.send(@tag, @input)
+      else
+        @state = :error
       end 
     end
 
     def parse_options(argv)
       parser = OptionParser.new do |opt|
-        opt.on("-i", "--input") { @input = true }
-        opt.on("-o", "--output") { @output = true }
-        opt.on("-s", "--stdin") { @stdin = true }
+        opt.on("-i", "--input INPUT") { |input| @input = input }
         opt.on("-t", "--tag TAG") { |tag| @tag = tag }
-        opt.on("-d", "--data DATA") { |data| @data = data }
-        opt.on("-f", "--fake") { |fake| @fake = fake }
       end
       parser.parse(argv)
     end

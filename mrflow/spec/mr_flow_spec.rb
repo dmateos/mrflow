@@ -2,55 +2,36 @@ require_relative "../application.rb"
 
 describe MrFlow::Application do
   describe "argument parsing" do
-    it "accepts a tag with -t or --tag" do
-      expect(MrFlow::Application.new(["--tag", "test"]).tag).to eq("test")
+    it "accepts a tag argument -t" do
+      flow = MrFlow::Application.new(["-t", "test-tag"])
+      flow.run
+      expect(flow.tag).to eq("test-tag")
     end
 
-    it "accepts an input request with -i or --input" do
-      expect(MrFlow::Application.new(["--input"]).input).to eq(true)
-    end
-
-    it "accepts an output request with -o or --output" do
-      expect(MrFlow::Application.new(["--output"]).output).to eq(true)
-    end
-
-    it "accepts a data input with -d or --data" do
-      expect(MrFlow::Application.new(["--data", "test"]).data).to eq("test")
-    end 
-
-    it "accepts the std data input option" do 
-      expect(MrFlow::Application.new(["--stdin"]).stdin).to eq(true)
-
+    it "accepts an input argument -i "do 
+      flow = MrFlow::Application.new(["-i", "test-data"])
+      flow.run
+      expect(flow.input).to eq("test-data")
     end
   end
 
-  describe "input gathering" do
-    it "is able to grab input via the --data param" do
-      expect(MrFlow::Application.new(["--data", "test"]).data).to eq("test")
+  describe "application states" do
+    it "is put into output mode when given only a tag" do
+      flow = MrFlow::Application.new(["-t", "test-tag"])
+      flow.run
+      expect(flow.state).to eq(:output)
     end
 
-    it "is able to gather input via stdin" do
-
-    end
-  end
-
-  describe "input processing" do
-    it "pushes data from a data argument" do
-
+    it "is put into input mode when given a tag and an input" do
+      flow = MrFlow::Application.new(["-t", "test-tag", "-i", "test"])
+      flow.run
+      expect(flow.state).to eq(:input)
     end
 
-    it "streams data from stdin" do
-
-    end
-  end
-
-  describe "output processing" do
-    it "pulls data for a given tag" do
-
-    end
-
-    it "streams data for a given tag" do
-
+    it "is put into error mode when given only an input" do
+      flow = MrFlow::Application.new(["-i", "test"])
+      flow.run
+      expect(flow.state).to eq(:error)
     end
   end
 end

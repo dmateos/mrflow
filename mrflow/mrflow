@@ -2,4 +2,4 @@
 
 require "./application.rb"
 
-MrFlow::Application.new(ARGV)
+MrFlow::Application.new(ARGV).run
