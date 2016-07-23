@@ -23,7 +23,11 @@ module MrFlow
         puts flow_handler.receive(@tag) if not @dummy
       elsif @tag and @input
         @state = :input
-        flow_handler.send(@tag, @input) if not @dummy
+        resp = flow_handler.send(@tag, @input) if not @dummy
+
+        if not @dummy and not resp
+          puts "error"
+        end
       else
         @state = :error
       end 
