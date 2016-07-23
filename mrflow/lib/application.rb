@@ -19,34 +19,34 @@ module MrFlow
     def run(stdin_input = $stdin)
       flow_handler = MrFlow::SimpleFlowHandler.new(URL)
 
-      if @tag
-        if @input
-          @state = :input
-
-          if not @dummy
-            resp = flow_handler.send(@tag, @input)
-            puts "error" if not resp
-          end
-          return
-
-        elsif @stdin
-          @state = :input
-
-          if not @dummy 
-            str = MrFlow::InputReader.new(stdin_input).gets
-            resp = flow_handler.send(@tag, str) if not str.empty?
-          end
-          return
-
-        else
-          @state = :output
-          puts flow_handler.receive(@tag) if not @dummy
-          return
-        end
+      if not @tag
+        @state = :error
+        return
       end
 
-      @state = :error
-      puts "error"
+      if @input
+        @state = :input
+
+        if not @dummy
+          resp = flow_handler.send(@tag, @input)
+          puts "error" unless resp
+        end
+        return
+
+      elsif @stdin
+        @state = :input
+
+        if not @dummy 
+          str = MrFlow::InputReader.new(stdin_input).gets
+          resp = flow_handler.send(@tag, str) unless str.empty?
+        end
+        return
+
+      else
+        @state = :output
+        puts flow_handler.receive(@tag) unless @dummy
+        return
+      end
     end
 
     def parse_options(argv)
