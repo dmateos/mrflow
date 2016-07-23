@@ -9,7 +9,6 @@ module MrFlow
       while s = @input.gets 
         @str += s
       end
-
       @str
     end
   end
