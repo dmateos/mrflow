@@ -1,17 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    httparty (0.13.7)
-      json (~> 1.8)
-      multi_xml (>= 0.5.2)
-    json (1.8.3)
-    multi_xml (0.5.5)
+    event_emitter (0.2.5)
+    websocket (1.2.3)
+    websocket-client-simple (0.3.0)
+      event_emitter
+      websocket
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  httparty
+  websocket-client-simple
 
 BUNDLED WITH
-   1.10.6
+   1.12.5

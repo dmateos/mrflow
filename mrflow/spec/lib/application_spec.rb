@@ -6,7 +6,7 @@ describe MrFlow::Application do
   let(:i_arg) { [ "-d", "-i", "test-data"] }
   let(:t_i_arg) { t_arg + i_arg }
 
-  describe "argument parsing" do
+  describe "#parse - argument parsing" do
     it "accepts a dummy argument so it does nothing for testing" do
       flow = MrFlow::Application.new(dummy_arg)
       flow.run
