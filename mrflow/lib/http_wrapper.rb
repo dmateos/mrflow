@@ -1,4 +1,5 @@
 require "net/http"
+require "json"
 
 # We can party like HTTParty
 module HTTPWrapper

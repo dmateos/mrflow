@@ -1,5 +1,5 @@
-require "httparty"
 require_relative "http_wrapper.rb"
+require "json"
 
 module MrFlow
   class SimpleFlowHandler
@@ -10,7 +10,14 @@ module MrFlow
 
     def send(tag, data)
       begin
-        @transport.post("#{@server}", send_json(tag, data))
+        resp = @transport.post("#{@server}", send_json(tag, data))
+
+        if resp["success"] and resp["id"]
+          return resp["id"]
+        elsif resp["error"]
+          return false
+        end
+
       rescue Errno::ECONNREFUSED
         "connection refused"
       end
