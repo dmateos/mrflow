@@ -21,7 +21,7 @@ class FlowsController < ApplicationController
         format.json { render json: { success: true, id: @flow.id, flow_tag: @flow.flow_tag } }
       else
         format.html { redirect_to root_path }
-        format.json { render json: { success: false, error: @flow.errors } }
+        format.json { render json: { success: false, error: @flow.errors }, status: 404 }
       end
     end
   end
