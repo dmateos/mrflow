@@ -5,7 +5,9 @@ class FlowsController < ApplicationController
     respond_to do |format|
       if @flow
         format.html { redirect_to @flow } 
-        format.json { render json: { payload: @flow.payload } }
+        format.json { render json: { success: true, payload: @flow.payload } }
+      else
+        format.json { render json: { success: false, error: "flow not found" }, status: 404 }
       end
     end
   end
@@ -19,7 +21,7 @@ class FlowsController < ApplicationController
         format.json { render json: { success: true, id: @flow.id, flow_tag: @flow.flow_tag } }
       else
         format.html { redirect_to root_path }
-        format.json { render json: { success: false, errors: @flow.errors } }
+        format.json { render json: { success: false, error: @flow.errors } }
       end
     end
   end

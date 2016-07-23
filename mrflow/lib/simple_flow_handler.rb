@@ -1,18 +1,34 @@
 require "httparty"
+require_relative "http_wrapper.rb"
 
 module MrFlow
   class SimpleFlowHandler
-    def initialize(server = "http://localhost/flows", transport = HTTParty)
+    def initialize(server = "http://localhost/flows", transport = HTTPWrapper)
       @server = server
       @transport = transport
     end
 
     def send(tag, data)
-      @transport.post("#{@server}", send_json(tag, data))
+      begin
+        @transport.post("#{@server}", send_json(tag, data))
+      rescue Errno::ECONNREFUSED
+        "connection refused"
+      end
     end
 
     def receive(tag)
-      @transport.get("#{@server}/#{tag}", json_headers)["payload"]
+      begin
+        resp = @transport.get("#{@server}/#{tag}", json_headers)
+
+        if resp["success"] and resp["payload"]
+          return resp["payload"]
+        elsif resp["error"]
+          return resp["error"]
+        end 
+
+      rescue Errno::ECONNREFUSED
+        "connection refused"
+      end
     end
 
     private

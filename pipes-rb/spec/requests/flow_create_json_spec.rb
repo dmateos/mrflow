@@ -23,8 +23,10 @@ RSpec.describe "Create flow with JSON" do
   end
 
   describe "invalid" do
-    it "returns an error" do
-        post flows_path, params: param.to_json, headers: header
+    describe "simple" do 
+      it "returns an error" do
+          post flows_path, params: param.to_json, headers: header
+      end
     end
   end
 end
