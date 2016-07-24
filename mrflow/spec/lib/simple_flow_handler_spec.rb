@@ -21,7 +21,7 @@ describe MrFlow::SimpleFlowHandler do
 
     it "handles flow server returning an error with the request" do
       expect(fake_http).to receive(:post).with("#{host}", anything).and_return(send_error_payload)
-      expect(subject.send(tag, "test")).to eq(false)
+      expect(subject.send(tag, "test")).to eq(send_error_payload["error"])
     end
   end
 

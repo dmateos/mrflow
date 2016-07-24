@@ -15,7 +15,7 @@ module MrFlow
         if resp["success"] and resp["id"]
           return resp["id"]
         elsif resp["error"]
-          return false
+          return resp["error"]
         end
 
       rescue Errno::ECONNREFUSED

@@ -26,11 +26,7 @@ module MrFlow
 
       if @input
         @state = :input
-
-        if not @dummy
-          resp = flow_handler.send(@tag, @input)
-          puts "error" unless resp
-        end
+        puts flow_handler.send(@tag, @input) unless @dummy
         return
 
       elsif @stdin
