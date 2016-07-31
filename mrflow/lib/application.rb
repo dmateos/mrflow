@@ -16,32 +16,20 @@ module MrFlow
       parse_options(@args)
     end
 
-    def run(stdin_input = $stdin)
-      flow_handler = MrFlow::SimpleFlowHandler.new(URL)
-
+    def run(stdin = $stdin)
       if not @tag
         @state = :error
         return
       end
 
+      flow_handler = MrFlow::SimpleFlowHandler.new(URL)
+
       if @input
-        @state = :input
-        puts flow_handler.send(@tag, @input) unless @dummy
-        return
-
+        handle_input_from_arg(flow_handler)
       elsif @stdin
-        @state = :input
-
-        if not @dummy 
-          str = MrFlow::InputReader.new(stdin_input).gets
-          resp = flow_handler.send(@tag, str) unless str.empty?
-        end
-        return
-
+        handle_input_from_stdin(flow_handler, stdin)
       else
-        @state = :output
-        puts flow_handler.receive(@tag) unless @dummy
-        return
+        handle_output_to_stdout(flow_handler)
       end
     end
 
@@ -53,6 +41,25 @@ module MrFlow
         opt.on("-d", "--dummy") { @dummy = true }
       end
       parser.parse(argv)
+    end
+
+    private
+    def handle_input_from_arg(flow_handler)
+      @state = :input
+      puts flow_handler.send(@tag, @input) unless @dummy
+    end
+
+    def handle_input_from_stdin(flow_handler, stdin = $stdin)
+      @state = :input
+      if not @dummy
+        str = MrFlow::InputReader.new(stdin).gets
+        puts flow_handler.send(@tag, str) unless str.empty?
+      end
+    end
+
+    def handle_output_to_stdout(flow_handler)
+      @state = :output
+      puts flow_handler.receive(@tag) unless @dummy
     end
   end
 end
